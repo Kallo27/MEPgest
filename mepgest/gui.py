@@ -17,6 +17,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 from mepgest.models import committees
+from PySide6.QtWidgets import QLineEdit, QPushButton, QComboBox, QMessageBox
+from mepgest.models import delegates
+from mepgest.speech import SpeechType
 
 
 def launch_gui():
@@ -57,7 +60,7 @@ def launch_gui():
         delegate_frame = QWidget()
         delegate_layout = QHBoxLayout(delegate_frame)
 
-        name_label = QLabel(f"{delegate.surname} {delegate.name}")
+        name_label = QLabel(f"{delegate.code} {delegate.surname} {delegate.name}")
         name_label.setFont(QFont("Arial", 14))
 
         committee_label = QLabel(f"{delegate.committee_name}")
@@ -108,7 +111,7 @@ def launch_gui():
             delegate_frame = QWidget()
             delegate_layout = QHBoxLayout(delegate_frame)
 
-            name_label = QLabel(f"{delegate.surname} {delegate.name}")
+            name_label = QLabel(f"{delegate.code} {delegate.surname} {delegate.name}")
             name_label.setFont(QFont("Arial", 14))
             score_label = QLabel(f"Score: {delegate.score():.2f}")
             score_label.setFont(QFont("Arial", 12))
@@ -141,14 +144,43 @@ def launch_gui():
 
     tab_widget.addTab(committees_tab, "Committees")
 
-    # === Speeches Tab (placeholder) ===
+    # === Speeches Tab ===
     speeches_tab = QWidget()
     speeches_layout = QVBoxLayout(speeches_tab)
-    speeches_label = QLabel("🗣️ This tab will show speeches data.")
-    speeches_label.setFont(QFont("Arial", 14))
-    speeches_layout.addWidget(speeches_label)
+
+    search_label = QLabel("Enter Delegate Code:")
+    search_label.setFont(QFont("Arial", 12))
+    speeches_layout.addWidget(search_label)
+
+    code_input = QLineEdit()
+    code_input.setPlaceholderText("e.g., 101")
+    speeches_layout.addWidget(code_input)
+
+    speech_type_dropdown = QComboBox()
+    speech_type_dropdown.addItems([speech.value for speech in SpeechType])
+    speeches_layout.addWidget(speech_type_dropdown)
+
+    add_button = QPushButton("➕ Add Speech")
+    speeches_layout.addWidget(add_button)
+
+    def add_speech():
+        code = code_input.text().strip().upper()
+        speech_text = speech_type_dropdown.currentText()
+        delegate = delegates.get(code)
+
+        if delegate is None:
+            QMessageBox.warning(window, "Delegate Not Found", f"No delegate found with code: {code}")
+            return
+
+        speech_type = SpeechType(speech_text)
+        delegate.speak(speech_type)
+        QMessageBox.information(window, "Speech Added", f"{speech_type.value} added to {delegate.name} {delegate.surname}.")
+
+    add_button.clicked.connect(add_speech)
+
     speeches_layout.addStretch()
     tab_widget.addTab(speeches_tab, "Speeches")
+
 
     window.setCentralWidget(central_widget)
     window.show()

@@ -14,7 +14,7 @@
 # IMPORT ZONE          #
 ########################
 
-from enum import Enum
+from mepgest.speech import SpeechType
 
 
 ########################
@@ -23,6 +23,7 @@ from enum import Enum
 
 committees = {} # Global
 schools = {}    # Global
+delegates = {}  # Global
 
 class Committee:
     def __init__(self, name):
@@ -107,33 +108,6 @@ def assign_delegate_codes():
         # Sort delegates in the committee by surname then name
         sorted_delegates = sorted(committee.delegates, key=lambda d: (d.surname.lower(), d.name.lower()))
         for i, delegate in enumerate(sorted_delegates, start=1):
-            delegate.code = int(f"{committee_index}{i:02d}")
-
-
-class SpeechType(Enum):
-    OPENING = "Opening speech"
-    AMENDMENT_SPEECH = "Amendment speech"
-    AMENDMENT_DEFENSE = "Amendment defense"
-    FOLLOW_UP = "Follow-up"
-    FOLLOW_UP_DEFENSE = "Follow-up defense"
-    INTERVENTION = "Intervention"
-    DEFENSE = "Defense"
-    SPEECH_AGAINST = "Speech against"
-    CLOSING = "Closing Speech"
-    
-    # Default weights for each speech type
-    default_weights = {
-        "Opening speech": 3.5,
-        "Amendment speech": 3,
-        "Amendment defense": 3,
-        "Follow-up": 2,
-        "Follow-up defense": 2,
-        "Intervention": 3,
-        "Defense": 3,
-        "Speech against": 3,
-        "Closing Speech": 3.5,
-    }
-
-    @classmethod
-    def get_weight(cls, speech_type):
-        return cls.default_weights.get(speech_type, 1)
+            code = f"{committee_index}{i:02d}"
+            delegate.code = code
+            delegates[code] = delegate  # Add delegate to global delegates dictionary

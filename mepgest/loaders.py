@@ -26,16 +26,16 @@ def load_delegates(filepath, verbose=False):
         print("\n✅ Load complete.")
 
         if verbose:
-            unique_committees = sorted(committees.keys())
-            unique_schools = sorted(schools.keys())
+            unique_committees = sorted(committees.items())
+            unique_schools = sorted(schools.items())
 
             print("\n🧭 Unique Committees:")
-            for c in unique_committees:
-                print(f" - {c}: {len(c.delegates)} delegates")
+            for name, committee in unique_committees:
+                print(f" - {name}: {len(committee.delegates)} delegates")
 
             print("\n🏫 Unique Schools:")
-            for s in unique_schools:
-                print(f" - {s}: {c.delegates} delegates")
+            for name, school in unique_schools:
+                print(f" - {name}: {len(school.delegates)} delegates")
 
     except Exception as e:
         print(f"❌ Error loading participants: {e}")
