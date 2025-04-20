@@ -63,6 +63,7 @@ class Delegate:
         self.committee_name = committee_name
         self.school_name = school_name
         self.speeches = []
+        self.code = 0
 
         # Auto-register to committee
         if committee_name not in committees:
@@ -81,6 +82,13 @@ class Delegate:
             "type": speech_type,
             "weight": weight
         })
+    
+    def unspeak(self, speech_type):
+        # Find the speech with the correct type and remove it
+        for speech in self.speeches:
+            if speech['type'] == speech_type:
+                self.speeches.remove(speech)
+                break
 
     def speech_count(self):
         return len(self.speeches)
@@ -102,12 +110,14 @@ class Delegate:
 
 
 def assign_delegate_codes():
-    # Sort committee names alphabetically and number them starting from 1
-    sorted_committees = sorted(committees.items())  # [(name, Committee), ...]
-    for committee_index, (committee_name, committee) in enumerate(sorted_committees, start=1):
-        # Sort delegates in the committee by surname then name
+    for committee_name, committee in sorted(committees.items()):
+        # Extract the number from the start of the committee name (e.g., "2 AFET" → 2)
+        committee_number = committee_name
+        
+        # Sort delegates by surname and name
         sorted_delegates = sorted(committee.delegates, key=lambda d: (d.surname.lower(), d.name.lower()))
         for i, delegate in enumerate(sorted_delegates, start=1):
-            code = f"{committee_index}{i:02d}"
+            code = f"{committee_number}{i:02d}"
             delegate.code = code
             delegates[code] = delegate  # Add delegate to global delegates dictionary
+

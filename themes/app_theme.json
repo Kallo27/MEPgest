@@ -1,173 +1,143 @@
 {
-    "QWidget": {
-      "background-color": "#2E3440",
-      "color": "#D8DEE9",
-      "font-family": "Arial, sans-serif",
-      "font-size": "14px",
-      "border-radius": "10px",
-      "padding": "10px"
-    },
-    "QLabel": {
-      "color": "#D8DEE9",
-      "font-size": "16px"
-    },
-    "QTabWidget::pane": {
-      "border": "2px solid #4C566A",
-      "border-radius": "10px"
-    },
-    "QTabWidget::tab-bar": {
-      "alignment": "center"
-    },
-    "QTabWidget::tab": {
-      "background-color": "#3B4252",
-      "color": "#D8DEE9",
-      "padding": "15px",
-      "border-radius": "10px",
-      "font-size": "18px"
-    },
-    "QTabWidget::tab:selected": {
-      "background-color": "#4C566A",
-      "border-bottom": "3px solid #81A1C1",
-      "font-size": "20px"
-    },
-    "QPushButton": {
-      "background-color": "#5E81AC",
-      "color": "white",
-      "padding": "15px",
-      "border": "2px solid #4C566A",
-      "border-radius": "10px",
-      "font-size": "18px"
-    },
-    "QPushButton:hover": {
-      "background-color": "#4C719A"
-    },
-    "QLineEdit": {
-      "background-color": "#3B4252",
-      "color": "#D8DEE9",
-      "border": "2px solid #4C566A",
-      "border-radius": "8px",
-      "padding": "12px",
-      "font-size": "16px"
-    },
-    "QComboBox": {
-      "background-color": "#3B4252",
-      "color": "#D8DEE9",
-      "border": "2px solid #4C566A",
-      "border-radius": "8px",
-      "padding": "12px",
-      "font-size": "16px"
-    },
-    "QComboBox::drop-down": {
-      "border": "none"
-    },
-    "QListWidget": {
-      "background-color": "#3B4252",
-      "color": "#D8DEE9",
-      "border": "2px solid #4C566A",
-      "border-radius": "8px",
-      "padding": "12px",
-      "font-size": "16px"
-    },
-    "QListWidget::item": {
-      "padding": "15px"
-    },
-    "QListWidget::item:selected": {
-      "background-color": "#81A1C1",
-      "color": "white"
-    },
-    "QPushButton:disabled": {
-      "background-color": "#4C566A",
-      "color": "#D8DEE9"
-    },
-    "QScrollArea": {
-      "background-color": "transparent"
-    },
-    "QGridLayout": {
-      "margin": "15px"
-    },
-    "QHBoxLayout": {
-      "spacing": "15px"
-    },
-    "QVBoxLayout": {
-      "spacing": "15px"
-    },
-    "QWidget[background-color=\"transparent\"]": {
-      "background-color": "transparent"
-    },
-    "QScrollBar:horizontal": {
-    "border": "1px solid #434C5E",
-    "background": "#2E3440",
-    "height": "15px",
-    "margin": "0px 0px 0 0px"
+  "QWidget": {
+    "background-color": "#ffffff",
+    "color": "#333333",
+    "font-family": "System, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+    "font-size": "16px",
+    "border-radius": "10px",
+    "padding": "16px"
+  },
+  "QLabel": {
+    "color": "#333333",
+    "font-size": "16px",
+    "font-weight": "500"
+  },
+  "QTabWidget::pane": {
+    "border": "none",
+    "background-color": "#ffffff"
+  },
+  "QTabWidget::tab-bar": {
+    "alignment": "center"
+  },
+  "QTabWidget::tab": {
+    "background-color": "#f9f9f9",
+    "color": "#333333",
+    "padding": "12px 18px",
+    "border-radius": "25px 25px 0 0",
+    "font-size": "16px",
+    "font-weight": "600",
+    "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)"
+  },
+  "QTabWidget::tab:selected": {
+    "background-color": "#ffffff",
+    "color": "#333333",
+    "border-bottom": "none",
+    "font-size": "18px",
+    "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)"
+  },
+  "QPushButton": {
+    "background-color": "#3498db",
+    "color": "white",
+    "padding": "14px 22px",
+    "border": "none",
+    "border-radius": "30px",
+    "font-size": "16px",
+    "font-weight": "600",
+    "transition": "background-color 0.3s ease-in-out",
+    "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)"
+  },
+  "QPushButton:hover": {
+    "background-color": "#2980b9"
+  },
+  "QLineEdit": {
+    "background-color": "#f9f9f9",
+    "color": "#333333",
+    "border": "1px solid #ddd",
+    "border-radius": "25px",
+    "padding": "10px 16px",
+    "font-size": "16px",
+    "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.05)"
+  },
+  "QComboBox": {
+    "background-color": "#f9f9f9",
+    "color": "#333333",
+    "border": "1px solid #ddd",
+    "border-radius": "25px",
+    "padding": "10px 16px",
+    "font-size": "16px",
+    "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.05)"
+  },
+  "QComboBox::drop-down": {
+    "border": "none"
+  },
+  "QListWidget": {
+    "background-color": "#f9f9f9",
+    "color": "#333333",
+    "border": "1px solid #ddd",
+    "border-radius": "8px",
+    "padding": "12px",
+    "font-size": "16px",
+    "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.05)"
+  },
+  "QListWidget::item": {
+    "padding": "12px",
+    "border-radius": "8px"
+  },
+  "QListWidget::item:selected": {
+    "background-color": "#3498db",
+    "color": "white"
+  },
+  "QPushButton:disabled": {
+    "background-color": "#BDC3C7",
+    "color": "#7F8C8D"
+  },
+  "QScrollArea": {
+    "background-color": "transparent"
+  },
+  "QScrollBar:horizontal": {
+    "border": "1px solid #ddd",
+    "background": "#f1f1f1",
+    "height": "10px"
   },
   "QScrollBar:vertical": {
-    "border": "1px solid #434C5E",
-    "background": "#2E3440",
-    "width": "15px",
-    "margin": "0px 0px 0px 0px"
+    "border": "1px solid #ddd",
+    "background": "#f1f1f1",
+    "width": "10px"
   },
   "QScrollBar::handle:horizontal": {
-    "background": "#88C0D0",
+    "background": "#3498db",
     "min-width": "20px",
-    "border-radius": "4px",
-    "border": "2px solid #88C0D0"
+    "border-radius": "5px"
   },
   "QScrollBar::handle:vertical": {
-    "background": "#88C0D0",
+    "background": "#3498db",
     "min-height": "20px",
-    "border-radius": "4px",
-    "border": "2px solid #88C0D0"
+    "border-radius": "5px"
   },
   "QScrollBar::add-line:horizontal": {
-    "background": "#5E81AC",
-    "width": "16px",
-    "subcontrol-position": "right",
-    "subcontrol-origin": "margin",
-    "border": "1px solid #434C5E"
+    "background": "#ffffff",
+    "width": "10px"
   },
   "QScrollBar::add-line:vertical": {
-    "background": "#5E81AC",
-    "height": "16px",
-    "subcontrol-position": "bottom",
-    "subcontrol-origin": "margin",
-    "border": "1px solid #434C5E"
+    "background": "#ffffff",
+    "height": "10px"
   },
   "QScrollBar::sub-line:horizontal": {
-    "background": "#81A1C1",
-    "width": "16px",
-    "subcontrol-position": "left",
-    "subcontrol-origin": "margin",
-    "border": "1px solid #434C5E"
+    "background": "#ffffff",
+    "width": "10px"
   },
   "QScrollBar::sub-line:vertical": {
-    "background": "#81A1C1",
-    "height": "16px",
-    "subcontrol-position": "top",
-    "subcontrol-origin": "margin",
-    "border": "1px solid #434C5E"
+    "background": "#ffffff",
+    "height": "10px"
   },
-  "QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal": {
+  "QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal": {
+    "background": "#3498db",
     "width": "4px",
-    "height": "4px",
-    "background": "#88C0D0"
+    "height": "4px"
   },
-  "QScrollBar:up-arrow:vertical, QScrollBar::down-arrow:vertical": {
+  "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical": {
+    "background": "#3498db",
     "width": "4px",
-    "height": "4px",
-    "background": "#88C0D0"
-  },
-  "QScrollBar::add-page:horizontal": {
-    "background": "none"
-  },
-  "QScrollBar::sub-page:horizontal": {
-    "background": "none"
-  },
-  "QScrollBar::add-page:vertical": {
-    "background": "none"
-  },
-  "QScrollBar::sub-page:vertical": {
-    "background": "none"
+    "height": "4px"
   }
-    
-  }
-  
+}
