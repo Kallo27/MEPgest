@@ -42,13 +42,13 @@ public:
     void setGender(const QString &gender);
 
     School *getSchool() const;
-    void setSchool(School *school);
+    bool setSchool(School *school);
 
     Committee *getCommittee() const;
-    void setCommittee(Committee *committee);
+    bool setCommittee(Committee *committee);
 
     int getId() const;
-    void setId(const int &id);
+    void setId(int id);
 
 };
 

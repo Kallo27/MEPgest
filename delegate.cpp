@@ -2,6 +2,8 @@
 #include "school.h"
 #include "committee.h"
 
+#include <QtGlobal>
+
 Delegate::Delegate(const QString &name, const QString &surname, const QDate &dateOfBirth,
                    const QString &gender, School *school, Committee *committee)
     : m_name(name),
@@ -12,7 +14,8 @@ Delegate::Delegate(const QString &name, const QString &surname, const QDate &dat
     m_committee(committee),
     m_id(-1) // Garbage id
 {
-    // Set delegate id autmoatically
+    Q_ASSERT(school != nullptr);
+    Q_ASSERT(committee != nullptr);
 }
 
 QString Delegate::getName() const
@@ -60,9 +63,12 @@ School *Delegate::getSchool() const
     return m_school;
 }
 
-void Delegate::setSchool(School *school)
+bool Delegate::setSchool(School *school)
 {
+    if(school == nullptr)
+        return false;
     m_school = school;
+    return true;
 }
 
 Committee *Delegate::getCommittee() const
@@ -70,17 +76,21 @@ Committee *Delegate::getCommittee() const
     return m_committee;
 }
 
-void Delegate::setCommittee(Committee *committee)
+bool Delegate::setCommittee(Committee *committee)
 {
+    if(committee == nullptr)
+        return false;
     m_committee = committee;
+    return true;
 }
+
 
 int Delegate::getId() const
 {
     return m_id;
 }
 
-void Delegate::setId(const int &id)
+void Delegate::setId(int id)
 {
     m_id = id;
 }
