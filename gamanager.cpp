@@ -13,6 +13,91 @@ GAmanager::~GAmanager()
     qDeleteAll(m_delegates);
 }
 
+bool GAmanager::loadFromCSV(const QString &filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Cannot open" << filePath;
+        return false;
+    }
+
+    QTextStream in(&file);
+    in.setEncoding(QStringConverter::Utf8);
+
+    // 1) Header: find the columns by name
+    QStringList header = parseCsvLine(in.readLine());
+    for(QString &h : header)
+        h = h.trimmed();
+
+    const int colName    = header.indexOf("Nome");
+    const int colSurname = header.indexOf("Cognome");
+    const int colBirth = header.indexOf("Data di nascita");
+    const int colGender = header.indexOf("Genere");
+    const int colSchool = header.indexOf("Scuola");
+    const int colCommittee = header.indexOf("Commissione");
+
+    const QList<QPair<QString, int>> required = {
+                                                 {"Nome", colName},
+                                                 {"Cognome", colSurname},
+                                                 {"Data di nascita", colBirth},
+                                                 {"Genere", colGender},
+                                                 {"Scuola", colSchool},
+                                                 {"Commissione", colCommittee},
+                                                 };
+
+    for (const auto &col : required) {
+        if (col.second == -1) {
+            qWarning() << "Missing column:" << col.first;
+            return false;
+        }
+    }
+
+    const int maxCol = std::max({colName, colSurname, colBirth, colGender, colSchool, colCommittee});
+
+    // 2) Read ows
+    int lineNumber = 1;
+    while (!in.atEnd()) {
+        ++lineNumber;
+        const QString line = in.readLine();
+        if (line.trimmed().isEmpty())
+            continue;
+
+        const QStringList f = parseCsvLine(line);
+        if(f.size() <= maxCol) {
+            qWarning() << "Line" << lineNumber << "is missing at least one column";
+            continue;
+        }
+
+        const QString name = f[colName].trimmed();
+        const QString surname = f[colSurname].trimmed();
+        const QString birth = f[colBirth].trimmed();
+        const QString gender = f[colGender].trimmed();
+        const QString schoolName = f[colSchool].trimmed();
+        const QString committeeName = f[colCommittee].trimmed();
+
+        const QDate dateOfBirth = QDate::fromString(birth, "d/M/yyyy");
+        if(!dateOfBirth.isValid()) {
+            qWarning() << "Delegate at line " << lineNumber << "has a wrong date format";
+            continue;
+        }
+
+        if(name.isEmpty() || surname.isEmpty() || gender.isEmpty() || schoolName.isEmpty() || committeeName.isEmpty()){
+            qWarning() << "Delegate at line " << lineNumber << "is missing one field";
+            continue;
+        }
+
+        School *school = findSchool(schoolName);
+        Committee *committee = findCommittee(committeeName);
+
+        Delegate *newDelegate = new Delegate(name, surname, dateOfBirth, gender, school, committee);
+        m_delegates.append(newDelegate);
+    }
+
+    sortAll();
+    createIds();
+    return true;
+}
+
 const QList<School *> &GAmanager::getSchools() const
 {
     return m_schools;
@@ -84,88 +169,47 @@ QStringList GAmanager::parseCsvLine(const QString &line, QChar delimiter)
     return fields;
 }
 
-
-bool GAmanager::loadFromCSV(const QString &filePath)
+void GAmanager::checkDuplicates()
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Cannot open" << filePath;
-        return false;
-    }
+    for (int i = 1; i < m_delegates.size(); ++i) {
+        // Check only subsequent because check when ordered
+        const Delegate *prev = m_delegates[i - 1];
+        const Delegate *cur  = m_delegates[i];
 
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Utf8);
-
-    // 1) Header: find the columns by name
-    QStringList header = parseCsvLine(in.readLine());
-    for(QString &h : header)
-        h = h.trimmed();
-
-    const int colName    = header.indexOf("Nome");
-    const int colSurname = header.indexOf("Cognome");
-    const int colBirth = header.indexOf("Data di nascita");
-    const int colGender = header.indexOf("Genere");
-    const int colSchool = header.indexOf("Scuola");
-    const int colCommittee = header.indexOf("Commissione");
-
-    const QList<QPair<QString, int>> required = {
-        {"Nome", colName},
-        {"Cognome", colSurname},
-        {"Data di nascita", colBirth},
-        {"Genere", colGender},
-        {"Scuola", colSchool},
-        {"Commissione", colCommittee},
-    };
-
-    for (const auto &col : required) {
-        if (col.second == -1) {
-            qWarning() << "Missing column:" << col.first;
-            return false;
+        if(prev->getCommittee()->getId() == cur->getCommittee()->getId() &&
+            prev->getSurname().localeAwareCompare(cur->getSurname()) == 0 &&
+            prev->getName().localeAwareCompare(cur->getName()) == 0)
+        {
+            qWarning() << "Duplicate delegate:" << cur->getName() << cur->getSurname()
+                       << "in" << cur->getCommittee()->getName();
         }
     }
-
-    const int maxCol = std::max({colName, colSurname, colBirth, colGender, colSchool, colCommittee});
-
-    // 2) Rows
-    int lineNumber = 1;
-    while (!in.atEnd()) {
-        ++lineNumber;
-        const QString line = in.readLine();
-        if (line.trimmed().isEmpty())
-            continue;
-
-        const QStringList f = parseCsvLine(line);
-        if(f.size() <= maxCol) {
-            qWarning() << "Line" << lineNumber << "is missing at least one column";
-            continue;
-        }
-
-        const QString name = f[colName].trimmed();
-        const QString surname = f[colSurname].trimmed();
-        const QString birth = f[colBirth].trimmed();
-        const QString gender = f[colGender].trimmed();
-        const QString schoolName = f[colSchool].trimmed();
-        const QString committeeName = f[colCommittee].trimmed();
-
-        const QDate dateOfBirth = QDate::fromString(birth, "d/M/yyyy");
-        if(!dateOfBirth.isValid()) {
-            qWarning() << "Delegate at line " << lineNumber << "has a wrong date format";
-            continue;
-        }
-
-        if(name.isEmpty() || surname.isEmpty() || gender.isEmpty() || schoolName.isEmpty() || committeeName.isEmpty()){
-            qWarning() << "Delegate at line " << lineNumber << "is missing one field";
-            continue;
-        }
-
-        School *school = findSchool(schoolName);
-        Committee *committee = findCommittee(committeeName);
-
-        Delegate *newDelegate = new Delegate(name, surname, dateOfBirth, gender, school, committee);
-        m_delegates.append(newDelegate);
-    }
-
-    sortAll();
-    createIds();
-    return true;
 }
+
+void GAmanager::sortAll()
+{
+    std::sort(m_schools.begin(), m_schools.end(),
+              [](const School *a, const School *b) {
+                  return a->getName().localeAwareCompare(b->getName()) < 0;
+              });
+
+    std::sort(m_committees.begin(), m_committees.end(),
+              [](const Committee *a, const Committee *b) {
+                  return a->getId() < b->getId();
+              });
+
+    std::sort(m_delegates.begin(), m_delegates.end(),
+              [](const Delegate *a, const Delegate *b) {
+                  if(a->getCommittee()->getId() != b->getCommittee()->getId())
+                      return a->getCommittee()->getId() < b->getCommittee()->getId();
+
+                  if(a->getSurname().localeAwareCompare(b->getSurname()) != 0)
+                      return a->getSurname().localeAwareCompare(b->getSurname()) < 0;
+
+                  return a->getName().localeAwareCompare(b->getName()) < 0;
+              });
+
+    checkDuplicates();
+
+}
+

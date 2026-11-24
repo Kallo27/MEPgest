@@ -33,6 +33,7 @@ private:
 
     static QStringList parseCsvLine(const QString &line, QChar delimiter = ',');
 
+    void checkDuplicates();
     void sortAll();
     void createIds();
 
