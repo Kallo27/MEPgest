@@ -1,10 +1,17 @@
 #include "committee.h"
+#include <qdebug.h>
 
 Committee::Committee(const QString &name)
     : m_name(name),
     m_id(-1),
     m_score(0)
 {
+    bool ok = false;
+    const int number = name.section(' ', 0, 0).toInt(&ok);
+    if (ok)
+        m_id = number;
+    else
+        qWarning() << "Committee name has no leading number:" << name;
 }
 
 QString Committee::getName() const
