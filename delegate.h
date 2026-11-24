@@ -9,16 +9,6 @@ class Committee;
 
 class Delegate
 {
-private:
-    QString m_name;
-    QString m_surname;
-    QDate m_dateOfBirth;
-    QString m_gender;
-    School *m_school;
-    Committee *m_committee;
-    int m_id;
-
-
 public:
     Delegate(
         const QString &name,
@@ -27,7 +17,7 @@ public:
         const QString &gender,
         School *school,
         Committee *committee
-    );
+        );
 
     QString getName() const;
     void setName(const QString &name);
@@ -50,6 +40,14 @@ public:
     int getId() const;
     void setId(int id);
 
+private:
+    QString m_name;
+    QString m_surname;
+    QDate m_dateOfBirth;
+    QString m_gender;
+    School *m_school;
+    Committee *m_committee;
+    int m_id;
 };
 
 #endif // DELEGATE_H
