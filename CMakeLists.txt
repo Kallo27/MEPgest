@@ -17,6 +17,10 @@ set(TS_FILES mepgest_it_IT.ts)
 add_executable(mepgest
   main.cpp
   ${TS_FILES}
+  delegate.h delegate.cpp
+  school.h school.cpp
+  committee.h committee.cpp
+  gamanager.h gamanager.cpp
 )
 target_link_libraries(mepgest PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
